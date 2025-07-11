@@ -1,9 +1,11 @@
 import React from 'react';
-
+import TableCategory from './TableCategory';
+import ModalCategory from "./ModalCategory";
 function Categories(props) {
     return (
-        <div>
-            <h1 className='text-red-500'>Categories</h1>
+        <div className='h-screen'>
+            <ModalCategory />
+            <TableCategory />
         </div>
     );
 }

@@ -8,25 +8,25 @@ function HomeRouters(props) {
     const routers = [
         {
             path: "/",
-             element : <Home />
+            element: <Home />
         },
         {
-            path:"/categories",
-            element : <Categories/>
+            path: "/categories",
+            element: <Categories />
         },
         {
-            path:"/product",
-            element : <Product/>
+            path: "/product",
+            element: <Product />
         },
         {
-            path:"/todolist",
-            element: <Todolist/>
+            path: "/todolist",
+            element: <Todolist />
         }
     ]
     return (
-        <div>
+        <div className="flex-1 h-full overflow-hidden">
             <Routes>
-                {routers.map((e,i) => 
+                {routers.map((e, i) =>
                     <Route path={e.path} element={e.element} />
                 )}
             </Routes>

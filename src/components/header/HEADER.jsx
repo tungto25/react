@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 function Header() {
     return (
         <div>
-            <header className="p-4 bg-slate-800 text-white text-center text-2xl p-3">
+            <header className="p-4 bg-slate-800 text-white text-center text-2xl">
                 <div className='flex justify-between items-center '>
                     <h2 className='text-4xl text-orange-500'>Movie</h2>
                     <form className="flex" role="search">

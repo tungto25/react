@@ -22,8 +22,12 @@ function Todolist(props) {
         setEdittext(item);
     }
     const save = () => {
-          data[editIndex] = editText ;
-          setEditIndex(null); 
+        data[editIndex] = editText;
+        setEditIndex(null);
+    }
+    const cancelEdit = () => {
+        setEditIndex(null);
+        setEdittext("");
     }
     return (
         <div className='mx-3'>
@@ -45,7 +49,7 @@ function Todolist(props) {
                                 <div onClick={save} className="p-3 bg-blue-500 border-3 rounded-xl text-white cursor-pointer">
                                     <TiTick />
                                 </div>
-                                <div className="p-3 bg-gray-500 border-3 rounded-xl text-white cursor-pointer">
+                                <div onClick={cancelEdit} className="p-3 bg-gray-500 border-3 rounded-xl text-white cursor-pointer">
                                     <MdCancel />
                                 </div>
                             </div>

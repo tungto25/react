@@ -4,10 +4,10 @@ import HomeRouters from "./routers/HomeRouters";
 function App(props) {
 
     return (
-        <>
-         <Header />
-         <HomeRouters />
-        </>
+        <div className="flex flex-col h-screen overflow-hidden">
+            < Header />
+            <HomeRouters />
+        </div>
     );
 }
 
