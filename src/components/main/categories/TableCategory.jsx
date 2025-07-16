@@ -9,7 +9,8 @@ import Paper from '@mui/material/Paper';
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import Button from '@mui/material/Button';
-
+import ModalDeleted from '../../header/ModalDeleted';
+import { useState } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -30,39 +31,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         border: 0,
     },
 }));
-// function createData(
-//     id: number,
-//     name: string,
-//     decription: string
-// ) {
-//     return { id, name, decription };
-// }
-// const rows = [
-//     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-//     createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-//     createData('Eclair', 262, 16.0, 24, 6.0),
-//     createData('Cupcake', 305, 3.7, 67, 4.3),
-//     createData('Gingerbread', 356, 16.0, 49, 3.9),
-// ];
 
+export default function CustomizedTables({ data, handleUpdate}) {
+  const [openDeleted, setOpenDeleted] = useState(false);
+  const [idDeleted,setIdDeleted] = useState(null);
+  const handleCloseDel = () => {
+     setOpenDeleted(false);
+  }
 
-export default function CustomizedTables() {
-
+  const showModalDeleted = (id) => {
+    setOpenDeleted(true);
+    setIdDeleted(id);
+  }
     return (
-        <div>
-            <div className='flex justify-center mt-3 gap-3 mb-5'>
-            </div>
+        <div className='p-3'>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
-                        <TableRow>
+                        <TableRow >
                             <StyledTableCell>ID</StyledTableCell>
                             <StyledTableCell align="right">name </StyledTableCell>
                             <StyledTableCell align="right">description </StyledTableCell>
-                            <StyledTableCell sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: 2 }}>
-                                <Button variant="contained" color='success' startIcon={<MdEdit />}>Edit</Button>
-                                <Button variant="contained" color="error" endIcon={<MdDeleteForever />}>Delete</Button>
-                            </StyledTableCell>
+                            <StyledTableCell align="right">Actions </StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -74,14 +64,16 @@ export default function CustomizedTables() {
                                 <StyledTableCell align="right">{e.name}</StyledTableCell>
                                 <StyledTableCell align="right">{e.description}</StyledTableCell>
                                 <StyledTableCell sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: 2 }}>
-                                    <Button variant="contained" color='success' startIcon={<MdEdit />}>Edit</Button>
-                                    <Button variant="contained" color="error" endIcon={<MdDeleteForever />}>Delete</Button>
+                                    <Button variant="contained" color='success' startIcon={<MdEdit  sx={{  }}/>}></Button>
+                                    <Button variant="contained" color="error" onClick={() => showModalDeleted(e.id)} endIcon={<MdDeleteForever />}></Button>
+                                    
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer >
+            <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate}/>
         </div>
     );
 }
