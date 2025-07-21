@@ -1,6 +1,6 @@
 import React from 'react';
 import Home from '../components/main/Home';
-import Product from '../components/main/Product';
+import Product from '../components/main/product/Product';
 import Todolist from '../components/main/Todolist';
 import { Route, Routes } from 'react-router-dom';
 import Categories from '../components/main/categories/Categories';
