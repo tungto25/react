@@ -11,6 +11,9 @@ import { MdDeleteForever } from "react-icons/md";
 import Button from '@mui/material/Button';
 import ModalDeleted from '../../header/ModalDeleted';
 import { useState } from 'react';
+import Typography from '@mui/material/Typography';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -32,17 +35,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-export default function CustomizedTables({ data, handleUpdate}) {
-  const [openDeleted, setOpenDeleted] = useState(false);
-  const [idDeleted,setIdDeleted] = useState(null);
-  const handleCloseDel = () => {
-     setOpenDeleted(false);
-  }
+export default function CustomizedTables({ data, handleUpdate, editOpen, filter, displayedData }) {
+    const [openDeleted, setOpenDeleted] = useState(false);
+    const [idDeleted, setIdDeleted] = useState(null);
+    const handleCloseDel = () => {
+        setOpenDeleted(false);
+    }
 
-  const showModalDeleted = (id) => {
-    setOpenDeleted(true);
-    setIdDeleted(id);
-  }
+    const showModalDeleted = (id) => {
+        setOpenDeleted(true);
+        setIdDeleted(id);
+    }
+    // page
+    const [page, setPage] = useState(1);
+    const rowsPerPage = 10;
+    const totalPages = Math.ceil(displayedData.length / rowsPerPage);
+    const startIndex = (page - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const paginatedData = displayedData.slice(startIndex, endIndex);
+    const handleChange = (event, value) => {
+        setPage(value);
+    };
+
     return (
         <div className='p-3'>
             <TableContainer component={Paper}>
@@ -56,24 +70,33 @@ export default function CustomizedTables({ data, handleUpdate}) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((e, index) => (
+                        {paginatedData.map((e, index) => (
                             <StyledTableRow key={e.id}>
                                 <StyledTableCell component="th" scope="row">
-                                    {e.id}
+                                    {index + 1}
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{e.name}</StyledTableCell>
                                 <StyledTableCell align="right">{e.description}</StyledTableCell>
                                 <StyledTableCell sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: 2 }}>
-                                    <Button variant="contained" color='success' startIcon={<MdEdit  sx={{  }}/>}></Button>
+                                    <Button onClick={() => editOpen(e)} variant="contained" color='success' startIcon={<MdEdit sx={{}} />}></Button>
                                     <Button variant="contained" color="error" onClick={() => showModalDeleted(e.id)} endIcon={<MdDeleteForever />}></Button>
-                                    
+
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer >
-            <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate}/>
+            <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate} />
+            <Stack spacing={2} alignItems="center" sx={{ mt: 2 }}>
+                <Typography>Page: {page} / {totalPages}</Typography>
+                <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={handleChange}
+                    color="primary"
+                />
+            </Stack>
         </div>
     );
 }

@@ -64,7 +64,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-function Navbar({handleOpen, title}) {
+function Navbar({ handleOpen, title, searchValue, handleSearch }) {
     return (
         <div>
             <Box sx={{ flexGrow: 1 }}>
@@ -85,13 +85,15 @@ function Navbar({handleOpen, title}) {
                             component="div"
                             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                         >
-                            List { title}
+                            List {title}
                         </Typography>
                         <Search>
                             <SearchIconWrapper>
                                 <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
+                                value={searchValue}
+                                onChange={handleSearch}
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
                             />
