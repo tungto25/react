@@ -10,11 +10,11 @@ import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import Button from '@mui/material/Button';
 import ModalDeleted from '../../header/ModalDeleted';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-
+import { CategoryContext } from "../../../contexts/CategoryProvider";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
@@ -35,9 +35,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-export default function CustomizedTables({ data, handleUpdate, editOpen, filter, displayedData }) {
+export default function CustomizedTables({ editOpen }) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
+    const { categories , handleUpdate} = useContext(CategoryContext);
     const handleCloseDel = () => {
         setOpenDeleted(false);
     }
@@ -48,11 +49,11 @@ export default function CustomizedTables({ data, handleUpdate, editOpen, filter,
     }
     // page
     const [page, setPage] = useState(1);
-    const rowsPerPage = 10;
-    const totalPages = Math.ceil(displayedData.length / rowsPerPage);
+    const rowsPerPage = 5;
+    const totalPages = Math.ceil(categories.length / rowsPerPage);
     const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    const paginatedData = displayedData.slice(startIndex, endIndex);
+    const paginatedData = categories.slice(startIndex, endIndex);
     const handleChange = (event, value) => {
         setPage(value);
     };

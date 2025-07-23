@@ -1,22 +1,15 @@
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import axios from "axios";
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-export default function BasicModal({ open, handleClose, handleUpdate, category, setCategory, inner, error, setError }) {
+import { CategoryContext } from "../../../contexts/CategoryProvider";
+import { style } from '../../../contants';
+
+export default function BasicModal({ open, handleClose, category, setCategory, inner, error, setError }) {
+    const { handleUpdate } = useContext(CategoryContext);
     const validation = () => {
         const newEror = {};
         newEror.name = category.name ? "" : "Please enter Name";

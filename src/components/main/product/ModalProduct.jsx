@@ -1,26 +1,19 @@
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
+import { style } from '../../../contants';
+import { ProductContext } from '../../../contexts/ProductProvider';
+import { CategoryContext } from '../../../contexts/CategoryProvider';
+import { Autocomplete } from '@mui/material';
+import { CiLogin } from 'react-icons/ci';
 
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-
-export default function ModalProduct({ open, handleClose, handleUpdate, setError, product, setProduct, abc, error }) {
+export default function ModalProduct({ open, handleClose, setError, product, setProduct, abc, error }) {
+    const { handleUpdate } = useContext(ProductContext);
     const validation = () => {
         const newError = {};
         newError.name = product.name ? "" : "vui long nhap name";
@@ -34,7 +27,7 @@ export default function ModalProduct({ open, handleClose, handleUpdate, setError
         } if (product.id) {
             await axios.put(`https://6878a5b463f24f1fdc9ed6fb.mockapi.io/product/${product.id}`, product);
         } else {
-            await axios.post("https://6878a5b463f24f1fdc9ed6fb.mockapi.io/product");
+            await axios.post("https://6878a5b463f24f1fdc9ed6fb.mockapi.io/product",product);
         }
         setProduct(abc);
         handleClose();
@@ -47,6 +40,9 @@ export default function ModalProduct({ open, handleClose, handleUpdate, setError
     const changeIput = (e) => {
         setProduct({ ...product, [e.target.name]: e.target.value })
     }
+    const { categories } = useContext(CategoryContext);
+ console.log(product);
+ 
     return (
         <div >
             <Modal
@@ -66,11 +62,33 @@ export default function ModalProduct({ open, handleClose, handleUpdate, setError
                             value={product?.description} onChange={changeIput} name='description' type="text" sx={{ mt: 2, width: '100%' }} id="outlined-basic" label="Decription" variant="outlined" />
                         <TextField error={!!error.name}
                             helperText={error.name}
-                            value={product?.price} onChange={changeIput} name='price' type="number" sx={{ mt: 2, width: '100%' }} id="outlined-basic" label="Decription" variant="outlined" />
-                        <TextField error={!!error.name}
-                            helperText={error.name}
-                            value={product?.category} onChange={changeIput} name='category' type="text" sx={{ mt: 2, width: '100%' }} id="outlined-basic" label="Decription" variant="outlined" />
-                            
+                            value={product?.price} onChange={changeIput} name='price' type="number" sx={{ mt: 2, width: '100%' }} id="outlined-basic" label="Price" variant="outlined" />
+                        <Autocomplete
+                            className='mt-2'
+                            options={categories} // Danh sách các tác giả
+                            getOptionLabel={(option) => option.name} // Hiển thị tên của tác giả
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Tìm kiếm hoặc chọn tác giả"
+                                    error={!!error.name}
+                                    helperText={error.name}
+                                />
+                            )}
+                            value={
+                                categories.find((cate) => cate.id === product?.category) || null // Hiển thị giá trị đã chọn
+                            }
+                            onChange={(event, newValue) => {
+                                // Cập nhật giá trị khi người dùng chọn
+                                changeIput({
+                                    target: { name: "category", value: newValue ? newValue.id : "" },
+                                });
+                            }}
+                            isOptionEqualToValue={(option, value) => option.id === value.id} // So sánh giá trị
+                            noOptionsText="Không tìm thấy kết quả" // Thông báo khi không có kết quả
+                            fullWidth
+                        />
+
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2, display: 'flex', gap: 2 }}>
                         <Button onClick={addTask} variant="contained">{product?.id ? "Update" : "Add"}</Button>

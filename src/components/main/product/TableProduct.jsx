@@ -10,10 +10,14 @@ import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import Button from '@mui/material/Button';
 import ModalDeleted from '../../header/ModalDeleted';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Pagination } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import { ProductContext } from '../../../contexts/ProductProvider';
+import { getOjectById } from '../../functionConvert';
+import { CategoryContext } from '../../../contexts/CategoryProvider';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -35,9 +39,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 const ITEMS_PER_PAGE = 10;
-export default function CustomizedTables({ data, handleUpdate, editOpen }) {
+export default function CustomizedTables({ editOpen }) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
+    const { Products, handleUpdate } = useContext(ProductContext);
+    const { categories } = useContext(CategoryContext);
 
     const showModalDeleted = (id) => {
         setOpenDeleted(true);
@@ -49,12 +55,11 @@ export default function CustomizedTables({ data, handleUpdate, editOpen }) {
 
 
     const [page, setPage] = useState(1);
-    const rowsPerPage = 10;
-    const displayedData = data;
-    const totalPages = Math.ceil(displayedData.length / rowsPerPage);
+    const rowsPerPage = 5;
+    const totalPages = Math.ceil(Products.length / rowsPerPage);
     const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    const paginatedData = displayedData.slice(startIndex, endIndex);
+    const paginatedData = Products.slice(startIndex, endIndex);
     const handleChange = (event, value) => {
         setPage(value);
     };
@@ -82,7 +87,7 @@ export default function CustomizedTables({ data, handleUpdate, editOpen }) {
                                 <StyledTableCell align="right">{e?.name}</StyledTableCell>
                                 <StyledTableCell align="right">{e?.description}</StyledTableCell>
                                 <StyledTableCell align="right">{e?.price}</StyledTableCell>
-                                <StyledTableCell align="right">{e?.category}</StyledTableCell>
+                                <StyledTableCell align="right">{getOjectById(categories,e?.category)?.name}</StyledTableCell>
                                 <StyledTableCell sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: 2 }}>
                                     <Button onClick={() => editOpen(e)} variant="contained" color='success' startIcon={<MdEdit sx={{}} />}></Button>
                                     <Button variant="contained" color="error" onClick={() => showModalDeleted(e.id)} endIcon={<MdDeleteForever />}></Button>
