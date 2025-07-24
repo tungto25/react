@@ -35,10 +35,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-export default function CustomizedTables({ editOpen }) {
+export default function CustomizedTables({ editOpen, displayedData }) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
-    const { categories , handleUpdate} = useContext(CategoryContext);
+    const { categories, handleUpdate } = useContext(CategoryContext);
     const handleCloseDel = () => {
         setOpenDeleted(false);
     }
@@ -50,10 +50,10 @@ export default function CustomizedTables({ editOpen }) {
     // page
     const [page, setPage] = useState(1);
     const rowsPerPage = 5;
-    const totalPages = Math.ceil(categories.length / rowsPerPage);
+    const totalPages = Math.ceil(displayedData.length / rowsPerPage);
     const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    const paginatedData = categories.slice(startIndex, endIndex);
+    const paginatedData = displayedData.slice(startIndex, endIndex);
     const handleChange = (event, value) => {
         setPage(value);
     };
@@ -74,7 +74,7 @@ export default function CustomizedTables({ editOpen }) {
                         {paginatedData.map((e, index) => (
                             <StyledTableRow key={e.id}>
                                 <StyledTableCell component="th" scope="row">
-                                    {index + 1}
+                                    {(page - 1) * rowsPerPage + index + 1}
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{e.name}</StyledTableCell>
                                 <StyledTableCell align="right">{e.description}</StyledTableCell>

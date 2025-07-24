@@ -22,9 +22,9 @@ export default function BasicModal({ open, handleClose, category, setCategory, i
             return
         }
         if (category.id) {
-            await axios.put(`https://67b687cf07ba6e590840dffb.mockapi.io/Categories/${category.id}`, category);
+            await axios.put(`https://6878a5b463f24f1fdc9ed6fb.mockapi.io/category/${category.id}`, category);
         } else {
-            await axios.post("https://67b687cf07ba6e590840dffb.mockapi.io/Categories", category);
+            await axios.post("https://6878a5b463f24f1fdc9ed6fb.mockapi.io/category", category);
         }
 
         handleClose();

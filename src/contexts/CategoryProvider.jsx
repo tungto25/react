@@ -14,7 +14,7 @@ function CategoryProvider({ children }) {
     }, [update]);
 
     const getApi = async () => {
-        const reponse = await axios.get("https://67b687cf07ba6e590840dffb.mockapi.io/Categories");
+        const reponse = await axios.get("https://6878a5b463f24f1fdc9ed6fb.mockapi.io/category");
         setCategories(reponse.data);
     }
     return (

@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react';
 
 export const ProductContext = createContext();
-function ProductProvider({children}) {
-    const [Products, setProducts] = useState([]);
+function ProductProvider({ children }) {
+    const [products, setProducts] = useState([]);
     const [update, setUpdate] = useState(false);
     const handleUpdate = () => {
         setUpdate(!update)
@@ -17,7 +17,7 @@ function ProductProvider({children}) {
     }
     return (
         <div>
-            <ProductContext.Provider value={{ Products, handleUpdate }}>{children}</ProductContext.Provider>
+            <ProductContext.Provider value={{ products, handleUpdate }}>{children}</ProductContext.Provider>
         </div>
     );
 }

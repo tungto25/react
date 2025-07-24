@@ -39,7 +39,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 const ITEMS_PER_PAGE = 10;
-export default function CustomizedTables({ editOpen }) {
+export default function CustomizedTables({ editOpen, displayedData }) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
     const { Products, handleUpdate } = useContext(ProductContext);
@@ -56,10 +56,10 @@ export default function CustomizedTables({ editOpen }) {
 
     const [page, setPage] = useState(1);
     const rowsPerPage = 5;
-    const totalPages = Math.ceil(Products.length / rowsPerPage);
+    const totalPages = Math.ceil(displayedData.length / rowsPerPage);
     const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
-    const paginatedData = Products.slice(startIndex, endIndex);
+    const paginatedData = displayedData.slice(startIndex, endIndex);
     const handleChange = (event, value) => {
         setPage(value);
     };
@@ -82,12 +82,12 @@ export default function CustomizedTables({ editOpen }) {
                         {paginatedData.map((e, index) => (
                             <StyledTableRow key={e.id}>
                                 <StyledTableCell component="th" scope="row">
-                                    {index + 1}
+                                    {(page - 1) * rowsPerPage + index + 1}
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{e?.name}</StyledTableCell>
                                 <StyledTableCell align="right">{e?.description}</StyledTableCell>
                                 <StyledTableCell align="right">{e?.price}</StyledTableCell>
-                                <StyledTableCell align="right">{getOjectById(categories,e?.category)?.name}</StyledTableCell>
+                                <StyledTableCell align="right">{getOjectById(categories, e?.category)?.name}</StyledTableCell>
                                 <StyledTableCell sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: 2 }}>
                                     <Button onClick={() => editOpen(e)} variant="contained" color='success' startIcon={<MdEdit sx={{}} />}></Button>
                                     <Button variant="contained" color="error" onClick={() => showModalDeleted(e.id)} endIcon={<MdDeleteForever />}></Button>

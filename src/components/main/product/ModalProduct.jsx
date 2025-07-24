@@ -18,6 +18,8 @@ export default function ModalProduct({ open, handleClose, setError, product, set
         const newError = {};
         newError.name = product.name ? "" : "vui long nhap name";
         newError.description = product.description ? "" : "vui long nhap description";
+        newError.price = product.price ? "" : "vui long nhap price"
+        newError.category = product.category ? "" : "vui long chọn thể loại"
         setError(newError);
         return Object.values(newError).every(e => e === "");
     }
@@ -27,7 +29,7 @@ export default function ModalProduct({ open, handleClose, setError, product, set
         } if (product.id) {
             await axios.put(`https://6878a5b463f24f1fdc9ed6fb.mockapi.io/product/${product.id}`, product);
         } else {
-            await axios.post("https://6878a5b463f24f1fdc9ed6fb.mockapi.io/product",product);
+            await axios.post("https://6878a5b463f24f1fdc9ed6fb.mockapi.io/product", product);
         }
         setProduct(abc);
         handleClose();
@@ -41,8 +43,8 @@ export default function ModalProduct({ open, handleClose, setError, product, set
         setProduct({ ...product, [e.target.name]: e.target.value })
     }
     const { categories } = useContext(CategoryContext);
- console.log(product);
- 
+    console.log(product);
+
     return (
         <div >
             <Modal
@@ -57,11 +59,11 @@ export default function ModalProduct({ open, handleClose, setError, product, set
                         <TextField error={!!error.name}
                             helperText={error.name}
                             value={product?.name} onChange={changeIput} name='name' type="text" sx={{ mt: 2, width: '100%' }} id="outlined-basic" label="Name" variant="outlined" />
-                        <TextField error={!!error.name}
-                            helperText={error.name}
+                        <TextField error={!!error.description}
+                            helperText={error.description}
                             value={product?.description} onChange={changeIput} name='description' type="text" sx={{ mt: 2, width: '100%' }} id="outlined-basic" label="Decription" variant="outlined" />
-                        <TextField error={!!error.name}
-                            helperText={error.name}
+                        <TextField error={!!error.price}
+                            helperText={error.price}
                             value={product?.price} onChange={changeIput} name='price' type="number" sx={{ mt: 2, width: '100%' }} id="outlined-basic" label="Price" variant="outlined" />
                         <Autocomplete
                             className='mt-2'
@@ -70,9 +72,9 @@ export default function ModalProduct({ open, handleClose, setError, product, set
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label="Tìm kiếm hoặc chọn tác giả"
-                                    error={!!error.name}
-                                    helperText={error.name}
+                                    label="Tìm kiếm hoặc chọn thể loại"
+                                    error={!!error.category}
+                                    helperText={error.category}
                                 />
                             )}
                             value={
